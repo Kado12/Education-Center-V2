@@ -8,6 +8,7 @@ import { CreateUserDto } from "../dto/create/create-user.dto";
 import { UpdateUserDto } from "../dto/update/update-user.dto";
 import { UpdatePasswordDto } from "../dto/update/update-password.dto";
 import { UserResponseDto } from "../dto/response/user-response.dto";
+import { RoleResponseDto } from "../dto/response/role-response.dto";
 
 @Injectable()
 export class UsersService {
@@ -229,6 +230,18 @@ export class UsersService {
     }
 
     await this.userRepository.remove(user);
+  }
+
+  async getAllRoles(): Promise<RoleResponseDto[]> {
+    const roles = await this.roleRepository.find({
+      order: { name: 'ASC' },
+    });
+
+    return roles.map(role => ({
+      id: role.id,
+      name: role.name,
+      permissions: role.permissions || undefined,
+    }));
   }
 
   private toResponseDto(user: User): UserResponseDto {

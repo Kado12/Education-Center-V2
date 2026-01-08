@@ -10,6 +10,8 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import type { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
+import { Role } from '../entities/role.entity';
+import { RoleResponseDto } from '../dto/response/role-response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -89,5 +91,18 @@ export class UsersController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     await this.usersService.delete(id);
     return { message: 'Usuario eliminado exitosamente' };
+  }
+
+  @Get('roles')
+  @Roles('admin', 'secretary')
+  @ApiOperation({ summary: 'Obtener lista de roles' })
+  @ApiResponse({ status: 200, description: 'Lista de roles', type: [RoleResponseDto] })
+  async getRoles(): Promise<RoleResponseDto[]> {
+    const roles = await this.usersService.getAllRoles();
+    return roles.map(role => ({
+      id: role.id,
+      name: role.name,
+      permissions: role.permissions || undefined,
+    }));
   }
 }
