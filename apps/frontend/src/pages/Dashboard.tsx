@@ -61,6 +61,12 @@ const Dashboard: React.FC = () => {
       icon: ChartBarIcon,
       color: 'bg-purple-600 hover:bg-purple-700',
       onClick: () => console.log('Reportes')
+    },
+    {
+      name: 'Gestión Usuarios',
+      icon: UsersIcon,
+      color: 'bg-orange-600 hover:bg-orange-700',
+      onClick: () => navigate('/users')
     }
   ];
 
