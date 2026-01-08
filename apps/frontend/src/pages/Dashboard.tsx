@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { UsersIcon, BuildingOfficeIcon, AcademicCapIcon, CurrencyDollarIcon, PlusIcon, DocumentTextIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -11,23 +12,91 @@ const Dashboard: React.FC = () => {
     navigate('/login');
   };
 
+  const stats = [
+    {
+      name: 'Total Estudiantes',
+      value: '0',
+      icon: UsersIcon,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100'
+    },
+    {
+      name: 'Total Sedes',
+      value: '0',
+      icon: BuildingOfficeIcon,
+      color: 'text-green-600',
+      bgColor: 'bg-green-100'
+    },
+    {
+      name: 'Procesos Activos',
+      value: '0',
+      icon: AcademicCapIcon,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100'
+    },
+    {
+      name: 'Ingresos del Mes',
+      value: 'S/ 0.00',
+      icon: CurrencyDollarIcon,
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-100'
+    }
+  ];
+
+  const quickActions = [
+    {
+      name: 'Nuevo Estudiante',
+      icon: PlusIcon,
+      color: 'bg-blue-600 hover:bg-blue-700',
+      onClick: () => console.log('Nuevo estudiante')
+    },
+    {
+      name: 'Ver Inscripciones',
+      icon: DocumentTextIcon,
+      color: 'bg-green-600 hover:bg-green-700',
+      onClick: () => console.log('Ver inscripciones')
+    },
+    {
+      name: 'Reportes',
+      icon: ChartBarIcon,
+      color: 'bg-purple-600 hover:bg-purple-700',
+      onClick: () => console.log('Reportes')
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-lg">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header/Navbar */}
+      <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-800">
-                Sistema de Inscripción
-              </h1>
+              <div className="flex-shrink-0">
+                <AcademicCapIcon className="h-8 w-8 text-indigo-600" />
+              </div>
+              <div className="ml-4">
+                <h1 className="text-xl font-bold text-gray-900">
+                  Sistema de Inscripción
+                </h1>
+              </div>
             </div>
+
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">
-                Bienvenido, {user?.username} ({user?.role})
-              </span>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-indigo-600">
+                    {user?.username?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <div className="text-sm">
+                  <p className="font-medium text-gray-900">{user?.username}</p>
+                  <p className="text-gray-500 capitalize">{user?.role}</p>
+                </div>
+              </div>
+
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
               >
                 Cerrar sesión
               </button>
@@ -36,112 +105,66 @@ const Dashboard: React.FC = () => {
         </div>
       </nav>
 
+      {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Tarjetas de estadísticas */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                    </svg>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Total Estudiantes
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        0
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Total Sedes
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        0
-                      </dd>
-                    </dl>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <div
+                key={stat.name}
+                className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="p-5">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className={`${stat.bgColor} rounded-md p-3`}>
+                        <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                      </div>
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-gray-500 truncate">
+                          {stat.name}
+                        </dt>
+                        <dd className="text-lg font-semibold text-gray-900">
+                          {stat.value}
+                        </dd>
+                      </dl>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
 
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Procesos Activos
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        0
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Ingresos del Mes
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        $0.00
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
+          {/* Quick Actions */}
+          <div className="mt-8">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">Acciones Rápidas</h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {quickActions.map((action) => (
+                <button
+                  key={action.name}
+                  onClick={action.onClick}
+                  className={`${action.color} text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2`}
+                >
+                  <action.icon className="h-5 w-5" />
+                  <span>{action.name}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Sección de acciones rápidas */}
+          {/* Recent Activity Placeholder */}
           <div className="mt-8">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">Acciones Rápidas</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Nuevo Estudiante
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Ver Inscripciones
-              </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Reportes
-              </button>
+            <h2 className="text-lg font-medium text-gray-900 mb-4">Actividad Reciente</h2>
+            <div className="bg-white shadow rounded-lg">
+              <div className="p-6 text-center text-gray-500">
+                <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <p>No hay actividad reciente para mostrar</p>
+                <p className="text-sm mt-2">Las últimas inscripciones aparecerán aquí</p>
+              </div>
             </div>
           </div>
         </div>
