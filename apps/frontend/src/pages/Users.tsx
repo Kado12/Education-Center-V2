@@ -3,8 +3,11 @@ import { useUsers } from '../hooks/useUsers';
 import UserModal from '../components/users/UserModal';
 import UserTable from '../components/users/UserTable';
 import UserFilters from '../components/users/UserFilters';
+import PasswordModal from '../components/users/PasswordModal';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import type { User } from '../types/auth.types';
+import { userService } from '../services/user.service';
 
 const Users: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +15,8 @@ const Users: React.FC = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const {
     users,
@@ -81,6 +86,22 @@ const Users: React.FC = () => {
     }
   };
 
+  const handleChangePassword = (user: User) => {
+    setSelectedUser(user);
+    setIsPasswordModalOpen(true);
+  };
+
+  const handlePasswordSubmit = async (passwordData: { currentPassword: string; newPassword: string }) => {
+    try {
+      await userService.updatePassword(selectedUser!.id, passwordData.currentPassword, passwordData.newPassword);
+      toast.success('Contraseña actualizada exitosamente');
+      setIsPasswordModalOpen(false);
+      setSelectedUser(null);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Error al actualizar contraseña');
+    }
+  };
+
   const openEditModal = (user: any) => {
     setEditingUser(user);
     setIsModalOpen(true);
@@ -138,6 +159,7 @@ const Users: React.FC = () => {
             onEdit={openEditModal}
             onToggleStatus={handleToggleStatus}
             onDelete={handleDeleteUser}
+            onChangePassword={handleChangePassword}
           />
         </div>
 
@@ -178,6 +200,16 @@ const Users: React.FC = () => {
           onSubmit={editingUser ? handleUpdateUser : handleCreateUser}
         />
       </div>
+
+      <PasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => {
+          setIsPasswordModalOpen(false);
+          setSelectedUser(null);
+        }}
+        username={selectedUser?.username || ''}
+        onSubmit={handlePasswordSubmit}
+      />
     </div>
   );
 };

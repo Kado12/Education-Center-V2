@@ -5,6 +5,7 @@ import {
   TrashIcon,
   CheckCircleIcon,
   XCircleIcon,
+  KeyIcon,
 } from '@heroicons/react/24/outline';
 
 interface UserTableProps {
@@ -14,6 +15,7 @@ interface UserTableProps {
   onEdit: (user: User) => void;
   onToggleStatus: (user: User) => void;
   onDelete: (userId: number) => void;
+  onChangePassword: (user: User) => void;
 }
 
 const UserTable: React.FC<UserTableProps> = ({
@@ -23,6 +25,7 @@ const UserTable: React.FC<UserTableProps> = ({
   onEdit,
   onToggleStatus,
   onDelete,
+  onChangePassword,
 }) => {
   if (isLoading) {
     return (
@@ -119,11 +122,19 @@ const UserTable: React.FC<UserTableProps> = ({
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex items-center justify-end space-x-2">
                   <button
+                    onClick={() => onChangePassword(user)}
+                    className="text-yellow-600 hover:text-yellow-900 p-1"
+                    title="Cambiar contraseña"
+                  >
+                    <KeyIcon className="h-5 w-5" />
+                  </button>
+
+                  <button
                     onClick={() => onEdit(user)}
                     className="text-indigo-600 hover:text-indigo-900 p-1"
                     title="Editar"
                   >
-                    <PencilIcon width={40} />
+                    <PencilIcon className='w-5 h-5' />
                   </button>
 
                   <button
@@ -133,9 +144,9 @@ const UserTable: React.FC<UserTableProps> = ({
                     title={user.isActive ? 'Desactivar' : 'Activar'}
                   >
                     {user.isActive ? (
-                      <XCircleIcon width={40} />
+                      <XCircleIcon className='w-5 h-5' />
                     ) : (
-                      <CheckCircleIcon width={40} />
+                      <CheckCircleIcon className='w-5 h-5' />
                     )}
                   </button>
 
@@ -144,7 +155,7 @@ const UserTable: React.FC<UserTableProps> = ({
                     className="text-red-600 hover:text-red-900 p-1"
                     title="Eliminar"
                   >
-                    <TrashIcon width={40} />
+                    <TrashIcon className='w-5 h-5' />
                   </button>
                 </div>
               </td>

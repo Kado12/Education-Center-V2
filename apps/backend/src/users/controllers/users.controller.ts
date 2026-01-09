@@ -31,9 +31,33 @@ export class UsersController {
     @Query('page') page?: number,
     @Query('limit') limit?: number,
     @Query('search') search?: string,
-    @Query('isActive') isActive?: boolean,
+    @Query('isActive') isActiveParam?: string, // Recibir como string primero
   ) {
+    // 🔧 Convertir string a boolean correctamente
+    let isActive: boolean | undefined;
+    if (isActiveParam !== undefined && isActiveParam !== '') {
+      isActive = isActiveParam === 'true';
+    }
+
+    console.log('=== DEBUG FILTRO USUARIOS ===');
+    console.log('Parámetros recibidos:', { page, limit, search, isActiveParam });
+    console.log('Después de conversión:', { page, limit, search, isActive });
+    console.log('IsActive type:', typeof isActive);
+
     return this.usersService.findAll(page, limit, search, isActive);
+  }
+
+  @Get('/roles')
+  @Roles('admin', 'secretary')
+  @ApiOperation({ summary: 'Obtener lista de roles' })
+  @ApiResponse({ status: 200, description: 'Lista de roles', type: [RoleResponseDto] })
+  async getRoles(): Promise<RoleResponseDto[]> {
+    const roles = await this.usersService.getAllRoles();
+    return roles.map(role => ({
+      id: role.id,
+      name: role.name,
+      permissions: role.permissions || undefined,
+    }));
   }
 
   @Get(':id')
@@ -62,7 +86,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Patch(':id/password')
+  @Put(':id/password')
   @ApiOperation({ summary: 'Actualizar contraseña del usuario' })
   async updatePassword(
     @Param('id', ParseIntPipe) id: number,
@@ -93,16 +117,4 @@ export class UsersController {
     return { message: 'Usuario eliminado exitosamente' };
   }
 
-  @Get('roles')
-  @Roles('admin', 'secretary')
-  @ApiOperation({ summary: 'Obtener lista de roles' })
-  @ApiResponse({ status: 200, description: 'Lista de roles', type: [RoleResponseDto] })
-  async getRoles(): Promise<RoleResponseDto[]> {
-    const roles = await this.usersService.getAllRoles();
-    return roles.map(role => ({
-      id: role.id,
-      name: role.name,
-      permissions: role.permissions || undefined,
-    }));
-  }
 }

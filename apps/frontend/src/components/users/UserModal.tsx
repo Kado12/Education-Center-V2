@@ -48,7 +48,7 @@ const UserModal: React.FC<UserModalProps> = ({
       setValue('username', user.username);
       setValue('email', user.email);
       setValue('roleId', roles.find(r => r.name === user.role)?.id || 0);
-      setValue('password', ''); // No mostrar contraseña actual
+      setValue('password', '');
     } else {
       reset();
     }
@@ -59,21 +59,37 @@ const UserModal: React.FC<UserModalProps> = ({
   const handleFormSubmit = (data: any) => {
     const submitData = {
       ...data,
-      password: data.password || undefined, // Solo enviar si se proporciona
+      password: data.password || undefined,
     };
     onSubmit(submitData);
   };
 
-  return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose} />
+  // 🔧 Prevenir cierre accidental al hacer clic dentro del modal
+  const handleModalClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
-        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-          <div className="absolute top-0 right-0 pt-4 pr-4">
+  return (
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto"
+      onClick={onClose}
+    >
+      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+
+        {/* Fondo oscuro con z-index más bajo */}
+        <div className="fixed inset-0 bg-gray-500 opacity-75 transition-opacity" />
+
+        {/* 🔧 Contenedor del modal con z-index más alto */}
+        <div
+          className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 relative z-10"
+          onClick={handleModalClick} // 🔧 Prevenir propagación del click
+        >
+
+          {/* Botón de cerrar */}
+          <div className="absolute top-4 right-4">
             <button
               type="button"
-              className="bg-white rounded-md text-gray-400 hover:text-gray-500"
+              className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 z-20"
               onClick={onClose}
             >
               <span className="sr-only">Cerrar</span>
@@ -81,6 +97,7 @@ const UserModal: React.FC<UserModalProps> = ({
             </button>
           </div>
 
+          {/* Contenido del modal */}
           <div className="sm:flex sm:items-start">
             <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
@@ -88,6 +105,7 @@ const UserModal: React.FC<UserModalProps> = ({
               </h3>
 
               <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+                {/* Username field */}
                 <div>
                   <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                     Nombre de Usuario
@@ -102,6 +120,7 @@ const UserModal: React.FC<UserModalProps> = ({
                   )}
                 </div>
 
+                {/* Email field */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
@@ -116,6 +135,7 @@ const UserModal: React.FC<UserModalProps> = ({
                   )}
                 </div>
 
+                {/* Role field */}
                 <div>
                   <label htmlFor="roleId" className="block text-sm font-medium text-gray-700">
                     Rol
@@ -136,21 +156,7 @@ const UserModal: React.FC<UserModalProps> = ({
                   )}
                 </div>
 
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    {user ? 'Nueva Contraseña (opcional)' : 'Contraseña'}
-                  </label>
-                  <input
-                    type="password"
-                    {...register('password')}
-                    placeholder={user ? 'Dejar vacío para mantener actual' : 'Mínimo 6 caracteres'}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                  {errors.password && (
-                    <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-                  )}
-                </div>
-
+                {/* Buttons */}
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
                     type="submit"

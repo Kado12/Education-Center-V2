@@ -27,22 +27,27 @@ export class UsersService {
   }> {
     const skip = (page - 1) * limit;
 
+    // 🔧 Construir where conditions con el booleano correcto
     const whereConditions: any = {};
 
     if (search) {
       whereConditions.username = ILike(`%${search}%`);
     }
 
+    // 🔧 Ahora isActive es booleano true/false/undefined
     if (isActive !== undefined) {
-      whereConditions.isActive = isActive;
+      whereConditions.isActive = isActive; // ✅ Será true o false, no 'true' o 'false'
     }
+
+    console.log('Where conditions:', whereConditions);
+    console.log('Where conditions type:', typeof whereConditions.isActive);
 
     const [users, total] = await this.userRepository.findAndCount({
       where: whereConditions,
       relations: ['role'],
       skip,
       take: limit,
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'ASC' },
     });
 
     const userDtos = users.map(user => this.toResponseDto(user));
@@ -132,31 +137,47 @@ export class UsersService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    // Verificar si el nuevo username ya existe (si se está actualizando)
+    // Verificar username y email duplicados (como antes)
     if (updateUserDto.username && updateUserDto.username !== user.username) {
       const existingUsername = await this.userRepository.findOne({
         where: { username: updateUserDto.username, id: Not(id) },
       });
-
       if (existingUsername) {
         throw new ConflictException('El nombre de usuario ya está en uso');
       }
     }
 
-    // Verificar si el nuevo email ya existe (si se está actualizando)
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       const existingEmail = await this.userRepository.findOne({
         where: { email: updateUserDto.email, id: Not(id) },
       });
-
       if (existingEmail) {
         throw new ConflictException('El email ya está en uso');
       }
     }
 
-    // Actualizar campos
-    Object.assign(user, updateUserDto);
+    // 🔧 Si se cambia el rol, cargar el nuevo rol
+    if (updateUserDto.roleId && updateUserDto.roleId !== user.roleId) {
+      const newRole = await this.roleRepository.findOne({
+        where: { id: updateUserDto.roleId },
+      });
 
+      if (!newRole) {
+        throw new NotFoundException('Rol no encontrado');
+      }
+
+      const updatedData = {
+        ...user,
+        ...updateUserDto,
+        role: newRole,
+      };
+
+      const updatedUser = await this.userRepository.save(updatedData);
+      return this.toResponseDto(updatedUser);
+    }
+
+    // Si no se cambia el rol, actualizar normalmente
+    Object.assign(user, updateUserDto);
     const updatedUser = await this.userRepository.save(user);
     return this.toResponseDto(updatedUser);
   }

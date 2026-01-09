@@ -40,7 +40,6 @@ export const userService = {
 
   getRoles: async (): Promise<Role[]> => {
     const response = await api.get('/users/roles');
-    console.log(response)
     return response.data;
   },
 

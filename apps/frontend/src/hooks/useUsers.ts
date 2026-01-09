@@ -16,7 +16,7 @@ export const useUsers = ({ page = 1, limit = 10, search, isActive }: UseUsersPro
   const { data, isPending, error, isPlaceholderData } = useQuery({
     queryKey: ['users', page, limit, search, isActive],
     queryFn: () => userService.getUsers(page, limit, search, isActive),
-    placeholderData: (previousData) => previousData, // Reemplaza keepPreviousData
+    placeholderData: (previousData) => previousData,
   });
 
   // Query para obtener roles
@@ -24,8 +24,6 @@ export const useUsers = ({ page = 1, limit = 10, search, isActive }: UseUsersPro
     queryKey: ['roles'],
     queryFn: userService.getRoles,
   });
-
-  console.log(rolesData)
 
   // Mutación para crear usuario ✅ ACTUALIZADO
   const createUserMutation = useMutation({
