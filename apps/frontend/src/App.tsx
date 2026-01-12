@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
+import Layout from './components/layout/Layout';
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,26 @@ function App() {
               }
             />
             <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="users" element={<Users />} />
+              {/* Agrega más rutas aquí */}
+              <Route path="students" element={<div>Estudiantes - Próximamente</div>} />
+              <Route path="sedes" element={<div>Sedes - Próximamente</div>} />
+              <Route path="salons" element={<div>Salones - Próximamente</div>} />
+              <Route path="processes" element={<div>Procesos - Próximamente</div>} />
+              <Route path="payments" element={<div>Pagos - Próximamente</div>} />
+              <Route path="reports" element={<div>Reportes - Próximamente</div>} />
+              <Route path="settings" element={<div>Configuración - Próximamente</div>} />
+            </Route>
+            {/* <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
@@ -68,7 +89,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
           </Routes>
         </Router>
       </AuthProvider>
