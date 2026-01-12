@@ -39,9 +39,6 @@ export class UsersService {
       whereConditions.isActive = isActive; // ✅ Será true o false, no 'true' o 'false'
     }
 
-    console.log('Where conditions:', whereConditions);
-    console.log('Where conditions type:', typeof whereConditions.isActive);
-
     const [users, total] = await this.userRepository.findAndCount({
       where: whereConditions,
       relations: ['role'],

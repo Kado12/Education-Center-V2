@@ -39,11 +39,6 @@ export class UsersController {
       isActive = isActiveParam === 'true';
     }
 
-    console.log('=== DEBUG FILTRO USUARIOS ===');
-    console.log('Parámetros recibidos:', { page, limit, search, isActiveParam });
-    console.log('Después de conversión:', { page, limit, search, isActive });
-    console.log('IsActive type:', typeof isActive);
-
     return this.usersService.findAll(page, limit, search, isActive);
   }
 

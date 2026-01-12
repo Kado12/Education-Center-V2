@@ -22,28 +22,19 @@ export class AuthService {
   ) { }
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    console.log('🔍 Validando usuario:', email);
-    console.log('🔍 Password recibido:', password);
     const user = await this.userRepository.findOne({
       where: { email },
       relations: ['role'],
     });
 
-    console.log('🔍 Usuario encontrado:', user);
-    console.log('🔍 Usuario activo:', user?.isActive);
-
     if (user) {
-      console.log('🔍 Verificando password...');
       const isPasswordValid = await compare(password, user.password);
-      console.log('🔍 Password válido:', isPasswordValid);
 
       if (isPasswordValid) {
-        console.log('✅ Usuario validado correctamente');
         return user;
       }
     }
 
-    console.log('❌ Usuario o password inválido');
     return null;
   }
 
