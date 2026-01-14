@@ -8,6 +8,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import type { User } from '../types/auth.types';
 import { userService } from '../services/user.service';
+import type { CreateUserDto } from '../types/user.types';
 
 const Users: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +46,7 @@ const Users: React.FC = () => {
     isDeleting,
   } = useUsers({ page, search, isActive });
 
-  const handleCreateUser = async (userData: any) => {
+  const handleCreateUser = async (userData: CreateUserDto) => {
     try {
       await createUser(userData);
       toast.success('Usuario creado exitosamente');
