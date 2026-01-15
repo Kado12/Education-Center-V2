@@ -44,6 +44,7 @@ export class AuthController {
   getProfile(@CurrentUser() user: JwtPayload) { // 👈 Aquí está el fix
     return {
       userId: user.sub,
+      username: user.username,
       email: user.email,
       role: user.role,
     };

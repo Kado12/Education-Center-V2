@@ -112,6 +112,7 @@ export class AuthService {
   private async generateTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
     const payload: JwtPayload = {
       sub: user.id,
+      username: user.username,
       email: user.email,
       role: user.role.name,
     };
