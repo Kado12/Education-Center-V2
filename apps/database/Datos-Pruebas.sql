@@ -1,3 +1,11 @@
+INSERT INTO users (username, email, password, role_id)
+VALUES (
+    'Admin',
+    'admin@school.com',
+    '$2a$12$vCPD6hb7wqvH0FCblc8eKu/2trMIJgI0zSWmZ3Hp7BkTcSMrUmJha',
+    1
+  );
+
 -- Insertar datos iniciales
 INSERT INTO roles (name, permissions)
 VALUES (
@@ -17,7 +25,7 @@ VALUES (
     'Sede Norte',
     'SD002'
   );
-INSERT INTO registration_processes (name, code)
+INSERT INTO processes (name, code)
 VALUES (
     'Proceso Regular',
     'PR001'

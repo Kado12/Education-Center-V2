@@ -44,7 +44,7 @@ CREATE TABLE sedes (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 -- Tabla de procesos de inscripción
-CREATE TABLE registration_processes (
+CREATE TABLE processes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL UNIQUE,
   code VARCHAR(20) NOT NULL UNIQUE,
@@ -82,13 +82,13 @@ CREATE TABLE salons (
   capacity INT NOT NULL,
   sede_id INT NOT NULL,
   turn_id INT NOT NULL,
-  registration_process_id INT NOT NULL,
+  process_id INT NOT NULL,
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (sede_id) REFERENCES sedes(id),
   FOREIGN KEY (turn_id) REFERENCES turns(id),
-  FOREIGN KEY (registration_process_id) REFERENCES registration_processes(id),
+  FOREIGN KEY (process_id) REFERENCES processes(id),
   INDEX idx_salons_sede_turn (sede_id, turn_id)
 );
 -- Tabla de alumnos (sin foto en base64)
@@ -106,7 +106,7 @@ CREATE TABLE students (
   emergency_phone VARCHAR(20),
   registration_date DATE NOT NULL,
   payment_plan_id INT NOT NULL,
-  registration_process_id INT NOT NULL,
+  process_id INT NOT NULL,
   sede_id INT NOT NULL,
   salon_id INT NOT NULL,
   turn_id INT NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE students (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(id),
-  FOREIGN KEY (registration_process_id) REFERENCES registration_processes(id),
+  FOREIGN KEY (process_id) REFERENCES processes(id),
   FOREIGN KEY (sede_id) REFERENCES sedes(id),
   FOREIGN KEY (salon_id) REFERENCES salons(id),
   FOREIGN KEY (turn_id) REFERENCES turns(id),

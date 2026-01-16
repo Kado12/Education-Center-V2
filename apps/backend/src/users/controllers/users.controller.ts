@@ -10,7 +10,6 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import type { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
-import { Role } from '../entities/role.entity';
 import { RoleResponseDto } from '../dto/response/role-response.dto';
 
 @ApiTags('users')
@@ -99,7 +98,7 @@ export class UsersController {
 
   @Patch(':id/toggle-status')
   @Roles('admin')
-  @ApiOperation({ summary: 'Activar/desactivar usuario' })
+  @ApiOperation({ summary: 'Activar o desactivar usuario' })
   async toggleStatus(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.toggleStatus(id);
   }

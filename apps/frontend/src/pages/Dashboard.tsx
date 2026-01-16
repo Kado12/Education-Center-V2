@@ -64,7 +64,7 @@ const Dashboard: React.FC = () => {
       onClick: () => navigate('/users')
     },
     {
-      name: 'Ver Inscripciones',
+      name: 'Ver Procesos de Insripción',
       icon: DocumentTextIcon,
       color: 'bg-green-600 hover:bg-green-700',
       onClick: () => navigate('/processes')

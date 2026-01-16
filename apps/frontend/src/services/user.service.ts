@@ -14,7 +14,7 @@ export const userService = {
     return response.data;
   },
 
-  getUser: async (id: CreateUserDto): Promise<User> => {
+  getUser: async (id: number): Promise<User> => {
     const response = await api.get(`/users/${id}`);
     return response.data;
   },
