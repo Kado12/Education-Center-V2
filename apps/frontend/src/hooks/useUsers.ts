@@ -73,16 +73,16 @@ export const useUsers = ({ page = 1, limit = 10, search, isActive }: UseUsersPro
     isPlaceholderData,
 
     // Funciones de mutación ✅ ACTUALIZADO
-    createUser: createUserMutation.mutate,
+    createUser: createUserMutation.mutateAsync,
     isCreating: createUserMutation.isPending,
 
-    updateUser: updateUserMutation.mutate,
+    updateUser: updateUserMutation.mutateAsync,
     isUpdating: updateUserMutation.isPending,
 
-    toggleUserStatus: toggleStatusMutation.mutate,
+    toggleUserStatus: toggleStatusMutation.mutateAsync,
     isToggling: toggleStatusMutation.isPending,
 
-    deleteUser: deleteUserMutation.mutate,
+    deleteUser: deleteUserMutation.mutateAsync,
     isDeleting: deleteUserMutation.isPending,
   };
 };
