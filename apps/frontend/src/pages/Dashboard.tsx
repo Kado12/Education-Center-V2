@@ -9,10 +9,16 @@ import {
   DocumentTextIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
+import { useProcesses } from '../hooks/useProcesses';
+import { useTurns } from '../hooks/useTurns';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const processes = useProcesses().processes;
+  const activeProcesses = processes.filter((process) => process.isActive === true);
+  const turns = useTurns().turns;
+  const activeTurns = turns.filter((turn) => turn.isActive === true);
 
   // Stats de ejemplo (más tarde conectaremos con API)
   const stats = [
@@ -34,11 +40,11 @@ const Dashboard: React.FC = () => {
     },
     {
       name: 'Procesos Activos',
-      value: '0',
+      value: activeProcesses.length.toString(),
       icon: DocumentTextIcon,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
-      onClick: () => navigate('/processes')
+      onClick: () => navigate('/processes'),
     },
     {
       name: 'Ingresos del Mes',
@@ -47,6 +53,14 @@ const Dashboard: React.FC = () => {
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-100',
       onClick: () => navigate('/payments')
+    },
+    {
+      name: 'Turnos Activos',
+      value: activeTurns.length.toString(),
+      icon: ChartBarIcon,
+      color: 'text-red-600',
+      bgColor: 'bg-red-100',
+      onClick: () => navigate('/turns')
     }
   ];
 
@@ -68,6 +82,12 @@ const Dashboard: React.FC = () => {
       icon: DocumentTextIcon,
       color: 'bg-green-600 hover:bg-green-700',
       onClick: () => navigate('/processes')
+    },
+    {
+      name: 'Ver Turnos',
+      icon: AcademicCapIcon,
+      color: 'bg-purple-600 hover:bg-purple-700',
+      onClick: () => navigate('/turns')
     }
   ];
 

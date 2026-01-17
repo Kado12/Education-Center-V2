@@ -49,6 +49,12 @@ const navigation: NavItem[] = [
     roles: ['admin', 'secretary']
   },
   {
+    name: 'Turnos',
+    href: '/turns',
+    icon: ChartBarIcon,
+    roles: ['admin', 'secretary']
+  },
+  {
     name: 'Pagos',
     href: '/payments',
     icon: CurrencyDollarIcon,

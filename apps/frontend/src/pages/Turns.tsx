@@ -1,23 +1,22 @@
-import React from "react";
-import { useState } from "react";
-import type { CreateProcessDto, Process } from "../types/process.types";
-import { useProcesses } from "../hooks/useProcesses";
-import toast from "react-hot-toast";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import ProcessFilters from "../components/processes/ProcessFilters";
-import ProcessTable from "../components/processes/ProcessTable";
-import ProcessModal from "../components/processes/ProcessModal";
+import { useState } from "react"
+import type { CreateTurnDto, Turn } from "../types/turn.types"
+import { useTurns } from "../hooks/useTurns"
+import toast from "react-hot-toast"
+import { PlusIcon } from "@heroicons/react/24/outline"
+import TurnFilters from "../components/turns/TurnFilters"
+import TurnTable from "../components/turns/TurnTable"
+import TurnModal from "../components/turns/TurnModal"
 
-const Processes: React.FC = () => {
+const Turns: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingProcess, setEditingProcess] = useState<any>(null)
+  const [editingTurn, setEditingTurn] = useState<any>(null)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined)
-  const [selectedProcess, setSelectedProcess] = useState<Process | null>(null)
+  const [selectedTurn, setSelectedTurn] = useState<Turn | null>(null)
 
   const {
-    processes,
+    turns,
     total,
     totalPages,
     currentPage,
@@ -26,70 +25,70 @@ const Processes: React.FC = () => {
     error,
     isPlaceholderData,
 
-    createProcess,
+    createTurn,
     isCreating,
-    updateProcess,
+    updateTurn,
     isUpdating,
-    toggleProcessStatus,
+    toggleTurnStatus,
     isToggling,
-    deleteProcess,
+    deleteTurn,
     isDeleting,
-  } = useProcesses({ page, search, isActive })
+  } = useTurns({ page, search, isActive })
 
-  const handleCreateProcess = async (processData: CreateProcessDto) => {
+  const handleCreateTurn = async (turnData: CreateTurnDto) => {
     try {
-      await createProcess(processData)
-      toast.success('Proceso de Inscripción creado exitosamente')
+      await createTurn(turnData)
+      toast.success('Turno creado exitosamente')
       setIsModalOpen(false)
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al crear proceso de inscripción')
+      toast.error(error.response?.data?.message || 'Error al crear el turno')
     }
   }
 
-  const handleUpdateProcess = async (processData: any) => {
+  const handleUpdateTurn = async (turnData: any) => {
     try {
-      await updateProcess({ id: editingProcess.id, data: processData })
-      toast.success('Proceso de Inscripcion editado exitosamente')
-      setEditingProcess(null)
+      await updateTurn({ id: editingTurn.id, data: turnData })
+      toast.success('Turno editado exitosamente')
+      setEditingTurn(null)
       setIsModalOpen(false)
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al actualizar proceso de inscripción')
+      toast.error(error.response?.data?.message || 'Error al actualizar el turno')
     }
   }
 
-  const handleToggleStatus = async (process: any) => {
+  const handleToggleStatus = async (turn: any) => {
     try {
-      await toggleProcessStatus(process.id);
-      toast.success(`Proceso ${process.isActive ? 'desactivado' : 'activado'} exitosamente`);
+      await toggleTurnStatus(turn.id);
+      toast.success(`Turno ${turn.isActive ? 'desactivado' : 'activado'} exitosamente`);
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Error al cambiar estado');
     }
   };
 
-  const handleDeleteProcess = async (processId: number) => {
-    if (window.confirm('¿Está seguro de eliminar este proceso?')) {
+  const handleDeleteTurn = async (turnId: number) => {
+    if (window.confirm('¿Está seguro de eliminar este turno?')) {
       try {
-        await deleteProcess(processId);
-        toast.success('Proceso eliminado exitosamente');
+        await deleteTurn(turnId);
+        toast.success('Turno eliminado exitosamente');
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Error al eliminar proceso de inscripción');
+        toast.error(error.response?.data?.message || 'Error al eliminar turno');
       }
     }
   };
 
-  const openEditModal = (process: any) => {
-    setEditingProcess(process);
+  const openEditModal = (turn: any) => {
+    setEditingTurn(turn);
     setIsModalOpen(true);
   };
 
   const openCreateModal = () => {
-    setEditingProcess(null);
+    setEditingTurn(null);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setEditingProcess(null);
+    setEditingTurn(null);
   };
 
   return (
@@ -99,10 +98,10 @@ const Processes: React.FC = () => {
         <div className="md:flex md:items-center md:justify-between mb-8">
           <div className="flex-1 min-w-0">
             <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-              Gestión de Procesos
+              Gestión de Turnos
             </h2>
             <p className="mt-1 text-sm text-gray-500">
-              Administrar procesos del sistema
+              Administrar turnos del sistema
             </p>
           </div>
           <div className="mt-4 flex md:mt-0 md:ml-4">
@@ -112,27 +111,27 @@ const Processes: React.FC = () => {
               className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <PlusIcon className="-ml-1 mr-2 h-5 w-5" />
-              Nuevo Proceso
+              Nuevo Turno
             </button>
           </div>
         </div>
 
         {/* Filtros */}
-        <ProcessFilters
+        <TurnFilters
           search={search}
           onSearchChange={setSearch}
           isActive={isActive}
           onIsActiveChange={setIsActive}
         />
 
-        {/* Tabla de usuarios */}
+        {/* Tabla de turnos */}
         <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ProcessTable
-            processes={processes}
+          <TurnTable
+            turns={turns}
             isLoading={isLoading}
             onEdit={openEditModal}
             onToggleStatus={handleToggleStatus}
-            onDelete={handleDeleteProcess}
+            onDelete={handleDeleteTurn}
           />
         </div>
 
@@ -165,15 +164,15 @@ const Processes: React.FC = () => {
         )}
 
         {/* Modal */}
-        <ProcessModal
+        <TurnModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          process={editingProcess}
-          onSubmit={editingProcess ? handleUpdateProcess : handleCreateProcess}
+          turn={editingTurn}
+          onSubmit={editingTurn ? handleUpdateTurn : handleCreateTurn}
         />
       </div>
     </div>
   )
 }
 
-export default Processes
+export default Turns

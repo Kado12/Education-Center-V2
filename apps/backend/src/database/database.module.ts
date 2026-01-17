@@ -4,7 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../users/entities/user.entity';
 import { Role } from '../users/entities/role.entity';
 import { RefreshToken } from '../auth/entities/refresh-token.entity';
-import { Process } from 'src/process/entities/process.entity';
+import { Process } from '../process/entities/process.entity';
+import { Turn } from '../turns/entities/turn.entity';
 // import { Student } from '../students/entities/student.entity';
 // import { Salon } from '../salons/entities/salon.entity';
 // import { Sede } from '../sedes/entities/sede.entity';
@@ -27,6 +28,7 @@ import { Process } from 'src/process/entities/process.entity';
           Role,
           RefreshToken,
           Process,
+          Turn,
           // ... otras entidades
         ],
         synchronize: true, // Solo en desarrollo

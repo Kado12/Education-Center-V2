@@ -20,7 +20,6 @@ export const processService = {
 
   createProcess: async (processData: CreateProcessDto): Promise<Process> => {
     const response = await api.post('/processes', processData);
-    console.log(response)
     return response.data;
   },
 

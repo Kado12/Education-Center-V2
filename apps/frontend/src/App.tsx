@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Layout from './components/layout/Layout';
 import Processes from './pages/Processes';
+import Turns from './pages/Turns';
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ function App() {
               <Route index element={<Navigate to="/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />
+              <Route path="turns" element={<Turns />} />
               <Route path="processes" element={<Processes />} />
               {/* Agrega más rutas aquí */}
               <Route path="students" element={<div>Estudiantes - Próximamente</div>} />
