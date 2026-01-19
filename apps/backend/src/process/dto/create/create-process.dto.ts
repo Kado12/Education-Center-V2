@@ -6,7 +6,7 @@ export class CreateProcessDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9_-]+$/, {
-    message: 'El nombre de usuario solo puede contener letras, números, guiones bajos y guiones',
+    message: 'El nombre del proceso solo puede contener letras, números, guiones bajos y guiones',
   })
   name: string;
 
@@ -14,7 +14,7 @@ export class CreateProcessDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^[0-9]+$/, {
-    message: 'El código solo puede contener letras, números, guiones bajos y guiones',
+    message: 'El código solo puede contener números',
   })
   code: string;
 }

@@ -1,20 +1,17 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('turns')
-export class Turn {
+@Entity('sedes')
+export class Sede {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 100 })
   name: string;
 
-  @Column({ name: 'start_time', type: 'time' })
-  startTime: string;
+  @Column({ unique: true, length: 20 })
+  code: string;
 
-  @Column({ name: 'end_time', type: 'time' })
-  endTime: string;
-
-  @Column({ name: 'is_active', default: false })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

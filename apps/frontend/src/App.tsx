@@ -8,6 +8,7 @@ import Users from './pages/Users';
 import Layout from './components/layout/Layout';
 import Processes from './pages/Processes';
 import Turns from './pages/Turns';
+import Sedes from './pages/Sedes';
 
 const queryClient = new QueryClient();
 
@@ -68,9 +69,9 @@ function App() {
               <Route path="users" element={<Users />} />
               <Route path="turns" element={<Turns />} />
               <Route path="processes" element={<Processes />} />
+              <Route path="sedes" element={<Sedes />} />
               {/* Agrega más rutas aquí */}
               <Route path="students" element={<div>Estudiantes - Próximamente</div>} />
-              <Route path="sedes" element={<div>Sedes - Próximamente</div>} />
               <Route path="salons" element={<div>Salones - Próximamente</div>} />
               <Route path="payments" element={<div>Pagos - Próximamente</div>} />
               <Route path="reports" element={<div>Reportes - Próximamente</div>} />

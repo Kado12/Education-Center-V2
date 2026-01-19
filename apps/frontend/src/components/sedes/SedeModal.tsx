@@ -1,28 +1,30 @@
 import z from "zod";
-import type { Process } from "../../types/process.types";
+import type { Sede } from "../../types/sede.types";
 import type React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-const processSchema = z.object({
+const sedeSchema = z.object({
   name: z.string().min(3, 'El nombre debe de tener al menos 3 caracteres'),
   code: z.string().min(3, 'El nombre debe de tener al menos 3 caracteres'),
 })
 
-interface ProcessModalProps {
+interface SedeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  process: Process | null;
+  sede: Sede | null;
   onSubmit: (data: any) => void;
+  isSubmitting: boolean;
 }
 
-const ProcessModal: React.FC<ProcessModalProps> = ({
+const SedeModal: React.FC<SedeModalProps> = ({
   isOpen,
   onClose,
-  process,
+  sede,
   onSubmit,
+  isSubmitting,
 }) => {
   const {
     register,
@@ -31,7 +33,7 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
     reset,
     setValue,
   } = useForm({
-    resolver: zodResolver(processSchema),
+    resolver: zodResolver(sedeSchema),
     defaultValues: {
       name: '',
       code: '',
@@ -39,13 +41,13 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
   });
 
   useEffect(() => {
-    if (process) {
-      setValue('name', process.name);
-      setValue('code', process.code);
+    if (sede) {
+      setValue('name', sede.name);
+      setValue('code', sede.code);
     } else if (isOpen) {
       reset()
     }
-  }, [process, isOpen, setValue, reset])
+  }, [sede, isOpen, setValue, reset])
 
   if (!isOpen) return null;
 
@@ -92,14 +94,14 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
           <div className="sm:flex sm:items-start">
             <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                {process ? 'Editar Proceso' : 'Nuevo Proceso'}
+                {sede ? 'Editar Sede' : 'Nuevo Sede'}
               </h3>
 
               <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
                 {/* Name field */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Nombre de Proceso
+                    Nombre de Sede
                   </label>
                   <input
                     type="text"
@@ -114,7 +116,7 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
                 {/* Code field */}
                 <div>
                   <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                    Codigo de Proceso
+                    Codigo de Sede
                   </label>
                   <input
                     type="text"
@@ -131,8 +133,9 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
                   <button
                     type="submit"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    disabled={isSubmitting}
                   >
-                    {process ? 'Actualizar' : 'Crear'}
+                    {sede ? 'Actualizar' : 'Crear'}
                   </button>
                   <button
                     type="button"
@@ -151,4 +154,4 @@ const ProcessModal: React.FC<ProcessModalProps> = ({
   );
 }
 
-export default ProcessModal
+export default SedeModal

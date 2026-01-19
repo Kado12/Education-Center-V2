@@ -6,10 +6,9 @@ import { Role } from '../users/entities/role.entity';
 import { RefreshToken } from '../auth/entities/refresh-token.entity';
 import { Process } from '../process/entities/process.entity';
 import { Turn } from '../turns/entities/turn.entity';
+import { Sede } from '../sedes/entities/sede.entity';
 // import { Student } from '../students/entities/student.entity';
 // import { Salon } from '../salons/entities/salon.entity';
-// import { Sede } from '../sedes/entities/sede.entity';
-// import { Turn } from '../turns/entities/turn.entity';
 // import { PaymentPlan } from '../payment-plans/entities/payment-plan.entity';
 
 @Module({
@@ -29,6 +28,7 @@ import { Turn } from '../turns/entities/turn.entity';
           RefreshToken,
           Process,
           Turn,
+          Sede,
           // ... otras entidades
         ],
         synchronize: true, // Solo en desarrollo

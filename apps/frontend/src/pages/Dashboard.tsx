@@ -11,6 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useProcesses } from '../hooks/useProcesses';
 import { useTurns } from '../hooks/useTurns';
+import { useSedes } from '../hooks/useSedes';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -19,6 +20,8 @@ const Dashboard: React.FC = () => {
   const activeProcesses = processes.filter((process) => process.isActive === true);
   const turns = useTurns().turns;
   const activeTurns = turns.filter((turn) => turn.isActive === true);
+  const sedes = useSedes().sedes;
+  const activeSedes = sedes.filter((sede) => sede.isActive === true);
 
   // Stats de ejemplo (más tarde conectaremos con API)
   const stats = [
@@ -32,7 +35,7 @@ const Dashboard: React.FC = () => {
     },
     {
       name: 'Total Sedes',
-      value: '0',
+      value: activeSedes.length.toString(),
       icon: BuildingOfficeIcon,
       color: 'text-green-600',
       bgColor: 'bg-green-100',
